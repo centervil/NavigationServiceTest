@@ -1,0 +1,21 @@
+@startuml ViewClass
+
+class App
+class Resource
+class MainWindow
+class NavigationServiceEx
+class ResourceServiceEx
+class DialogService
+
+App *-- MainWindow
+App *-- Resource
+App *-- NavigationServiceEx
+App *-- ResourceServiceEx
+App *-- DialogService
+
+NavigationServiceEx --> MainWindow
+DialogService --> MainWindow
+ResourceServiceEx ..> Resource
+
+
+@enduml

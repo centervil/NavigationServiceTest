@@ -1,0 +1,127 @@
+@startuml ClassDiagram1
+
+rectangle View {
+    !include ClassDiagram_View.puml
+}
+
+rectangle ViewModel {
+    !include ClassDiagram_ViewModel.puml
+}
+
+NavigationServiceEx --> DialogService
+NavigationServiceEx --> ResourceServiceEx
+
+NavigationServiceEx *-- ViewModelFactory
+note bottom
+    NavigationServiceExが保持し、生成する際に
+    自身のインスタンス含むServiceクラスのインスタンスを渡す
+end note
+
+NavigationServiceEx ..^ INavigationServiceEx
+ResourceServiceEx ..^ IResourceServiceEx
+DialogService ..^ IDialogService
+
+@enduml
+
+@startuml ClassDiagram2 -没
+
+rectangle View {
+    !include ClassDiagram_View.puml
+}
+
+rectangle ViewModel {
+    !include ClassDiagram_ViewModel.puml
+}
+
+MainWindow *-- ViewModelFactory
+note bottom
+    MainWindowのコンストラクタで生成され、Appがセッター経由で各Serviceインスタンスを渡す
+    ChangeDialog()メソッドでViewModelFactory.CreateInstance()メソッドを呼ぶ
+    ダメでしょう
+end note
+
+NavigationServiceEx ..^ INavigationServiceEx
+ResourceServiceEx ..^ IResourceServiceEx
+DialogService ..^ IDialogService
+
+@enduml
+
+@startuml ClassDiagram3 -没
+
+rectangle View {
+    !include ClassDiagram_View.puml
+}
+
+rectangle ViewModel {
+    !include ClassDiagram_ViewModel.puml
+}
+
+
+App *-- ViewModelFactory
+note bottom
+    Appが生成し、コンストラクタ経由で各Serviceインスタンスを渡す
+    セッターインジェクションでMainWindowに持たせる
+    ChangeDialog()メソッドでViewModelFactory.CreateInstance()メソッドを呼ぶ
+    ダメかな？
+end note
+
+MainWindow --> ViewModelFactory
+NavigationServiceEx ..^ INavigationServiceEx
+ResourceServiceEx ..^ IResourceServiceEx
+DialogService ..^ IDialogService
+
+@enduml
+
+@startuml ClassDiagram4
+
+rectangle View {
+    !include ClassDiagram_View.puml
+    hide NavigationServiceEx
+    hide DialogService
+    hide ResourceServiceEx
+
+    MainWindow .right.> Resource
+    class MainWindow {
+        + void Navigate()
+        + void PopupOtherDialog()
+        + void ShowMessageBox()
+        + void ChangeResource()
+    }
+
+}
+    note top
+        MainWindowがIxxServiceの実装としてViewModelに注入される
+        MainWindow内でViewModelFactoryを生成し、
+        その際自身のインスタンスを渡す
+    end note
+
+rectangle ViewModel {
+    !include ClassDiagram_ViewModel.puml
+
+    interface INavigationServiceEx {
+        + void Navigate()
+    }
+    interface IDialogService {
+        + void PopupOtherDialog()
+        + void ShowMessageBox()
+    }
+    interface IResourceServiceEx {
+        + void ChangeResource()
+    }
+}
+
+rectangle Model {
+    !include ClassDiagram_Model.puml
+}
+
+MainWindow *-- ViewModelFactory
+MainWindow *-- MsetupUseCaseFactory
+MainWindow ..^ INavigationServiceEx
+MainWindow ..^ IDialogService
+MainWindow ..^ IResourceServiceEx
+ResourceServiceEx ..^ IResourceServiceEx
+DialogService ..^ IDialogService
+xxMsetupUseCase ..^ IxxMsetupUseCase
+MsetupUseCaseFactory .right.^ IMsetupUseCaseFactory
+
+@enduml

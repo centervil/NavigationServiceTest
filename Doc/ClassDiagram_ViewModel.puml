@@ -1,0 +1,29 @@
+
+@startuml ViewClass
+
+class xxViewModel
+abstract ViewModelBase
+interface INavigationServiceEx
+interface IResourceServiceEx
+interface IDialogService
+interface IMsetupUseCaseFactory
+interface IxxMsetupUseCase
+class ViewModelFactory
+
+ViewModelFactory .right.> xxViewModel
+ViewModelFactory .right.> ViewModelBase
+ViewModelFactory -up-> INavigationServiceEx
+ViewModelFactory -up-> IResourceServiceEx
+ViewModelFactory -up-> IDialogService
+ViewModelFactory -down-> IMsetupUseCaseFactory
+xxViewModel -right-^ ViewModelBase
+xxViewModel .up.> INavigationServiceEx
+xxViewModel .up.> IResourceServiceEx
+xxViewModel .up.> IDialogService
+xxViewModel .down.> IxxMsetupUseCase
+ViewModelBase *-up- INavigationServiceEx
+ViewModelBase *-up- IResourceServiceEx
+ViewModelBase *-up- IDialogService
+
+
+@enduml

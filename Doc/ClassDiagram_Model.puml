@@ -1,0 +1,14 @@
+
+@startuml ViewClass
+
+class xxMsetupUseCase
+abstract MsetupUseCaseBase
+class MsetupUseCaseFactory
+class UseCaseFactory
+
+MsetupUseCaseFactory ..> xxMsetupUseCase
+MsetupUseCaseFactory ..> MsetupUseCaseBase
+MsetupUseCaseFactory --> UseCaseFactory
+xxMsetupUseCase -right-^ MsetupUseCaseBase
+
+@enduml
