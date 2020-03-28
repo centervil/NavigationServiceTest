@@ -18,10 +18,11 @@ namespace NavigationServiceTest
 
         private static void App_Startup(object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
-            var navigationServiceEx = new NavigationServiceEx(mainWindow);
-            var viewModelFactory = new ViewModelFactory(navigationServiceEx);
-            mainWindow.Show();
+            var mode = ArgsHandler.GetMode(e.Args);
+            var myArgs = ArgsHandler.GetMyArgs(e.Args);
+
+            var modeRunner = new ModeRunner(mode, myArgs);
+            modeRunner.Run();
         }
     }
 }
