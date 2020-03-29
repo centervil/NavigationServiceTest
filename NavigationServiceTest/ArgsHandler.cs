@@ -7,12 +7,7 @@ namespace NavigationServiceTest
     {
         internal static MyMode GetMode(string[] args)
         {
-            if (args is null)
-            {
-                return MyMode.NoArgs;
-            }
-
-            if (args.Length == 0)
+            if ((args is null) || (args?.Length == 0))
             {
                 return MyMode.NoArgs;
             }
@@ -76,36 +71,38 @@ namespace NavigationServiceTest
                 {"/DEBUGPATH", null },
                 {"/DEBUGOUT", new List<string>(){"CMD", "VSCMD", "FILE"} }
             };
+        private string key;
+        private string value;
 
         public MyArg(string key, string value)
         {
-            Key = key;
-            Value = value;
+            this.key = key;
+            this.value = value;
         }
 
         public string Key
         {
-            get { return Key; }
+            get { return this.key; }
             private set
             {
-                if (!this.argsDictionary.ContainsKey(Key))
+                if (!this.argsDictionary.ContainsKey(this.key))
                 {
                     throw new ArgumentException();
                 }
-                Key = value;
+                this.key = value;
             }
         }
 
         public string Value
         {
-            get { return Value; }
+            get { return this.value; }
             private set
             {
                 foreach (var expectedValue in this.argsDictionary[this.Key])
                 {
                     if ((expectedValue is null) || (value == expectedValue))
                     {
-                        Value = value;
+                        this.value = value;
                         break;
                     }
                 }

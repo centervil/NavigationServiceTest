@@ -7,41 +7,39 @@ namespace NavigationServiceTest
     [MyAspect]
     internal class ModeRunner : ContextBoundObject
     {
-        private readonly MyMode mode;
-        private readonly IEnumerable<MyArg> myArgs;
-
-        public ModeRunner(MyMode mode, IEnumerable<MyArg> myArgs)
+        public static ModeRunner GetRunnner(MyMode mode)
         {
-            this.mode = mode;
-            this.myArgs = myArgs;
+            return new ModeRunner(mode);            
         }
 
-        internal void Run()
+        internal Action<IEnumerable<MyArg>> Run { get; private set; }
+
+        public ModeRunner(MyMode mode)
         {
             switch (mode)
             {
-                case MyMode.NoArgs:
-                    RunNormalMode();
-                    break;
-                case MyMode.Empty:
-                case MyMode.Unknown:
-                    break;
                 case MyMode.Normal:
-                    RunNormalMode();
+                    Run = RunNormalMode;
                     break;
                 case MyMode.Test:
-                    RunTestMode();
+                    Run = RunTestMode;
+                    break;
+                default:
+                    Run = (s) => App.Current.Shutdown();
                     break;
             }
         }
 
-        private void RunTestMode()
+        private void RunTestMode(IEnumerable<MyArg> myArgs)
         {
             throw new NotImplementedException();
         }
 
-        private void RunNormalMode()
+        private void RunNormalMode(IEnumerable<MyArg> myArgs)
         {
+            //SettingsHandler.GetSetting(myArgs);
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
             Debug.WriteLine("Start Normal Mode");
             return;
         }

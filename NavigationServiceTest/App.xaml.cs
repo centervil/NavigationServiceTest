@@ -12,17 +12,17 @@ namespace NavigationServiceTest
         {
             var app = new App();
             app.InitializeComponent();
-            app.Startup += App_Startup;
             app.Run();
         }
 
-        private static void App_Startup(object sender, StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
+            //base.OnStartup(e);
             var mode = ArgsHandler.GetMode(e.Args);
             var myArgs = ArgsHandler.GetMyArgs(e.Args);
 
-            var modeRunner = new ModeRunner(mode, myArgs);
-            modeRunner.Run();
+            ModeRunner.GetRunnner(mode).Run?.Invoke(myArgs);
+            new ModeRunner(mode).Run?.Invoke(myArgs);
         }
     }
 }
