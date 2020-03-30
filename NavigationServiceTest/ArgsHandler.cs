@@ -118,4 +118,11 @@ namespace NavigationServiceTest
         Test,
         Unknown
     }
+
+    internal enum MyArgName
+    {
+        DebugOut,
+        DebugLevel,
+        Test,
+    }
 }

@@ -37,7 +37,7 @@ namespace NavigationServiceTest
 
         private void RunNormalMode(IEnumerable<MyArg> myArgs)
         {
-            //SettingsHandler.GetSetting(myArgs);
+            SettingsHandler.SetConfiguration(myArgs);
             var mainWindow = new MainWindow();
             mainWindow.Show();
             Debug.WriteLine("Start Normal Mode");
